@@ -1,10 +1,10 @@
 /**
- * @trenderz/universal-logger
+ * logger-multi-db
  * Universal logging library for Node.js with ESM support
  */
 
 // Core
-export { createLogger, UniversalLogger } from "./core/logger.js";
+export { UniversalLogger, createLogger } from "./core/logger.js";
 
 // Types
 export type {
@@ -13,25 +13,25 @@ export type {
   LogContext,
   LogEntry,
   LogFilter,
-  LoggerConfig,
   LogLevel,
   LogStats,
+  LoggerConfig,
 } from "./types/index.js";
 
 // Adapters
-export { createMongoDBAdapter, MongoDBAdapter } from "./adapters/mongodb.js";
+export { MongoDBAdapter, createMongoDBAdapter } from "./adapters/mongodb.js";
 export type { MongoDBAdapterConfig } from "./adapters/mongodb.js";
 
 export {
-  createPostgreSQLAdapter,
   PostgreSQLAdapter,
+  createPostgreSQLAdapter,
 } from "./adapters/postgresql.js";
 export type { PostgreSQLAdapterConfig } from "./adapters/postgresql.js";
 
-export { createMySQLAdapter, MySQLAdapter } from "./adapters/mysql.js";
+export { MySQLAdapter, createMySQLAdapter } from "./adapters/mysql.js";
 export type { MySQLAdapterConfig } from "./adapters/mysql.js";
 
-export { createFirebaseAdapter, FirebaseAdapter } from "./adapters/firebase.js";
+export { FirebaseAdapter, createFirebaseAdapter } from "./adapters/firebase.js";
 export type { FirebaseAdapterConfig } from "./adapters/firebase.js";
 
 // Default export
