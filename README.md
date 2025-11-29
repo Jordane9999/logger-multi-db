@@ -46,6 +46,7 @@ npm install mongodb
 
 # PostgreSQL
 npm install pg
+npm i --save-dev @types/pg
 
 # MySQL
 npm install mysql2
