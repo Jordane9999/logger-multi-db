@@ -1,0 +1,33 @@
+# Source files
+src/
+examples/
+docs/
+
+# Tests
+**/*.test.ts
+**/*.spec.ts
+coverage/
+
+# Config
+tsconfig.json
+.eslintrc.js
+
+# Build files
+*.tsbuildinfo
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+
+# Environment
+.env*
+
+# IDE
+.vscode/
+.idea/
+
+# Misc
+*.log
