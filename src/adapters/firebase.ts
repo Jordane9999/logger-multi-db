@@ -2,6 +2,7 @@
  * Firebase/Firestore Adapter for Universal Logger
  */
 
+// @ts-expect-error - firebase-admin is a peer dependency, may not be installed
 import admin from 'firebase-admin';
 import { LogAdapter, LogEntry, LogFilter, LogLevel } from '../types/index.js';
 
@@ -168,7 +169,7 @@ export class FirebaseAdapter implements LogAdapter {
     const batch = this.db.batch();
     let count = 0;
 
-    snapshot.forEach(doc => {
+    snapshot.forEach((doc: any) => {
       batch.delete(doc.ref);
       count++;
     });

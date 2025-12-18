@@ -1,6 +1,6 @@
-# logger-multi-db
+# @trenderz/universal-logger
 
-[![npm version](https://img.shields.io/npm/v/logger-multi-db.svg)](https://www.npmjs.com/package/logger-multi-db)
+[![npm version](https://img.shields.io/npm/v/@trenderz/universal-logger.svg)](https://www.npmjs.com/package/@trenderz/universal-logger)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > **Universal logging library for Node.js** - One API, multiple databases, pure ESM
@@ -29,13 +29,13 @@ Log to **MongoDB**, **PostgreSQL**, **MySQL**, **Firebase**, or any database wit
 
 ```bash
 # npm
-npm install logger-multi-db
+npm install @trenderz/universal-logger
 
-# yarn
-yarn add logger-multi-db
+# yarn  
+yarn add @trenderz/universal-logger
 
 # pnpm
-pnpm add logger-multi-db
+pnpm add @trenderz/universal-logger
 ```
 
 **Then install your database adapter:**
@@ -46,9 +46,11 @@ npm install mongodb
 
 # PostgreSQL
 npm install pg
+npm i --save-dev @types/pg
 
 # MySQL
 npm install mysql2
+
 
 # Firebase
 npm install firebase-admin
@@ -61,81 +63,81 @@ npm install firebase-admin
 ### MongoDB
 
 ```javascript
-import { createLogger, createMongoDBAdapter } from "logger-multi-db";
+import { createLogger, createMongoDBAdapter } from '@trenderz/universal-logger';
 
 const logger = createLogger({
   adapter: createMongoDBAdapter({
-    uri: "mongodb://localhost:27017",
-    dbName: "myapp",
-    collectionName: "logs",
-    ttlDays: 30,
+    uri: 'mongodb://localhost:27017',
+    dbName: 'myapp',
+    collectionName: 'logs',
+    ttlDays: 30
   }),
-  service: "api",
-  environment: "production",
+  service: 'api',
+  environment: 'production'
 });
 
 await logger.init();
 
-logger.info("User logged in", { userId: "123", email: "user@example.com" });
-logger.error("Payment failed", { amount: 50 }, new Error("Stripe timeout"));
+logger.info('User logged in', { userId: '123', email: 'user@example.com' });
+logger.error('Payment failed', { amount: 50 }, new Error('Stripe timeout'));
 ```
 
 ### PostgreSQL
 
 ```javascript
-import { createLogger, createPostgreSQLAdapter } from "logger-multi-db";
+import { createLogger, createPostgreSQLAdapter } from '@trenderz/universal-logger';
 
 const logger = createLogger({
   adapter: createPostgreSQLAdapter({
-    host: "localhost",
-    database: "myapp",
-    user: "postgres",
-    password: "password",
+    host: 'localhost',
+    database: 'myapp',
+    user: 'postgres',
+    password: 'password'
   }),
-  service: "web",
+  service: 'web'
 });
 
 await logger.init();
 
-logger.info("Order created", { orderId: "456", amount: 99.99 });
+logger.info('Order created', { orderId: '456', amount: 99.99 });
 ```
 
 ### MySQL
 
 ```javascript
-import { createLogger, createMySQLAdapter } from "logger-multi-db";
+import { createLogger, createMySQLAdapter } from '@trenderz/universal-logger';
 
 const logger = createLogger({
   adapter: createMySQLAdapter({
-    host: "localhost",
-    database: "myapp",
-    user: "root",
-    password: "password",
+    host: 'localhost',
+    database: 'myapp',
+    user: 'root',
+    password: 'password'
   }),
-  service: "backend",
+  service: 'backend'
 });
 
 await logger.init();
 
-logger.warn("Low stock", { productId: "789", stock: 5 });
+logger.warn('Low stock', { productId: '789', stock: 5 });
 ```
 
 ### Firebase
 
 ```javascript
-import { createLogger, createFirebaseAdapter } from "logger-multi-db";
+import { createLogger, createFirebaseAdapter } from '@trenderz/universal-logger';
 
 const logger = createLogger({
   adapter: createFirebaseAdapter({
-    serviceAccount: "./serviceAccountKey.json",
-    collectionName: "logs",
+    serviceAccount: './serviceAccountKey.json',
+    collectionName: 'logs'
   }),
-  service: "mobile-app",
+  service: 'mobile-app'
 });
 
 await logger.init();
 
-logger.info("User signup", { userId: "123", provider: "google" });
+logger.info('User signup', { userId: '123', provider: 'google' });
 ```
 
 ---
@@ -145,15 +147,15 @@ logger.info("User signup", { userId: "123", provider: "google" });
 ### createLogger(config)
 
 ```javascript
-import { createLogger } from "logger-multi-db";
+import { createLogger, LogLevel } from '@trenderz/universal-logger';
 
 const logger = createLogger({
-  adapter, // Database adapter (required)
-  environment: "prod", // Environment
-  service: "api", // Service name
-  enableConsole: true, // Console logging
-  minLevel: "info", // Minimum level
-  sanitize: true, // Auto-sanitize
+  adapter,                    // Database adapter (required)
+  environment: 'prod',        // Environment
+  service: 'api',             // Service name
+  enableConsole: true,        // Console logging
+  minLevel: LogLevel.INFO,    // Minimum level (use LogLevel enum)
+  sanitize: true              // Auto-sanitize
 });
 ```
 
@@ -172,7 +174,7 @@ await logger.init()
 
 // Query logs
 const logs = await logger.query({
-  level: 'error',
+  level: LogLevel.ERROR,
   userId: 'user123',
   startDate: new Date('2024-01-01'),
   limit: 100
@@ -189,16 +191,15 @@ await logger.close()
 Sensitive data is **automatically masked**:
 
 ```javascript
-logger.info("Login attempt", {
-  email: "jordan@example.com", // → jor***@example.com
-  password: "supersecret123", // → ***REDACTED***
-  apiKey: "sk_live_12345", // → ***REDACTED***
-  userId: "user123", // ✅ Not masked
+logger.info('Login attempt', {
+  email: 'jordan@example.com',     // → jor***@example.com
+  password: 'supersecret123',       // → ***REDACTED***
+  apiKey: 'sk_live_12345',         // → ***REDACTED***
+  userId: 'user123'                 // ✅ Not masked
 });
 ```
 
 **Default masked fields:**
-
 - password, token, apiKey, secret
 - creditCard, ssn, bankAccount
 - privateKey, accessToken, refreshToken
@@ -211,13 +212,13 @@ logger.info("Login attempt", {
 ### Request Tracing
 
 ```javascript
-import { randomUUID } from "crypto";
+import { randomUUID } from 'crypto';
 
 const requestId = randomUUID();
 
-logger.info("Request started", { requestId, url: "/api/users" });
+logger.info('Request started', { requestId, url: '/api/users' });
 // ... processing ...
-logger.info("Request completed", { requestId, duration: 150 });
+logger.info('Request completed', { requestId, duration: 150 });
 
 // Find all logs for this request
 const logs = await logger.query({ requestId });
@@ -227,16 +228,16 @@ const logs = await logger.query({ requestId });
 
 ```javascript
 // Track orders
-logger.info("Order created", {
+logger.info('Order created', {
   orderId: order.id,
   userId: user.id,
-  amount: order.total,
+  amount: order.total
 });
 
 // Track payments
-logger.info("Payment processed", {
+logger.info('Payment processed', {
   orderId: order.id,
-  transactionId: payment.id,
+  transactionId: payment.id
 });
 ```
 
@@ -246,14 +247,10 @@ logger.info("Payment processed", {
 try {
   await processPayment(data);
 } catch (error) {
-  logger.error(
-    "Payment error",
-    {
-      userId: user.id,
-      amount: data.amount,
-    },
-    error
-  );
+  logger.error('Payment error', {
+    userId: user.id,
+    amount: data.amount
+  }, error);
 }
 ```
 
@@ -265,13 +262,13 @@ try {
 
 ```javascript
 // Before: MongoDB
-const adapter = createMongoDBAdapter({ uri: "..." });
+const adapter = createMongoDBAdapter({ uri: '...' });
 
-// After: PostgreSQL
-const adapter = createPostgreSQLAdapter({ host: "..." });
+// After: PostgreSQL  
+const adapter = createPostgreSQLAdapter({ host: '...' });
 
 // Your logging code stays the same!
-logger.info("Works!", { userId: "123" });
+logger.info('Works!', { userId: '123' });
 ```
 
 ---
@@ -283,17 +280,23 @@ Full TypeScript support:
 ```typescript
 import {
   createLogger,
-  LogLevel,
-  LogEntry,
-  LogContext,
-  LogFilter,
-  type MongoDBAdapterConfig,
-} from "logger-multi-db";
+  LogLevel,              // Enum (not a type)
+  type LogEntry,         // Type
+  type LogContext,       // Type
+  type LogFilter,        // Type
+  type MongoDBAdapterConfig
+} from '@trenderz/universal-logger';
 
 const config: MongoDBAdapterConfig = {
-  uri: "mongodb://localhost:27017",
-  dbName: "myapp",
+  uri: 'mongodb://localhost:27017',
+  dbName: 'myapp'
 };
+
+// Use LogLevel as a value
+const logger = createLogger({
+  adapter: createMongoDBAdapter(config),
+  minLevel: LogLevel.INFO  // ✅ Correct
+});
 ```
 
 ---
@@ -312,7 +315,7 @@ Disable in production:
 ```javascript
 const logger = createLogger({
   adapter,
-  enableConsole: process.env.NODE_ENV !== "production",
+  enableConsole: process.env.NODE_ENV !== 'production'
 });
 ```
 
@@ -332,7 +335,7 @@ MIT © [Jordan (Trenderz)]
 
 ## 🔗 Links
 
-- [npm package](https://www.npmjs.com/package/logger-multi-db)
+- [npm package](https://www.npmjs.com/package/@trenderz/universal-logger)
 - [GitHub](https://github.com/trenderz/universal-logger)
 - [Documentation](https://github.com/trenderz/universal-logger/tree/main/docs)
 

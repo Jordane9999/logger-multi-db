@@ -1,6 +1,6 @@
 {
-  "name": "logger-multi-db",
-  "version": "1.0.1",
+  "name": "@trenderz/universal-logger",
+  "version": "1.0.0",
   "description": "Universal logging library for Node.js - Works with MongoDB, PostgreSQL, MySQL, Firebase, and more",
   "type": "module",
   "main": "./dist/index.js",
@@ -11,20 +11,20 @@
       "types": "./dist/index.d.ts"
     },
     "./adapters/mongodb": {
-      "import": "./dist/adapters/mongodb.js",
-      "types": "./dist/adapters/mongodb.d.ts"
+      "import": "./dist/adapters/mongodb/index.js",
+      "types": "./dist/adapters/mongodb/index.d.ts"
     },
     "./adapters/postgresql": {
-      "import": "./dist/adapters/postgresql.js",
-      "types": "./dist/adapters/postgresql.d.ts"
+      "import": "./dist/adapters/postgresql/index.js",
+      "types": "./dist/adapters/postgresql/index.d.ts"
     },
     "./adapters/mysql": {
-      "import": "./dist/adapters/mysql.js",
-      "types": "./dist/adapters/mysql.d.ts"
+      "import": "./dist/adapters/mysql/index.js",
+      "types": "./dist/adapters/mysql/index.d.ts"
     },
     "./adapters/firebase": {
-      "import": "./dist/adapters/firebase.js",
-      "types": "./dist/adapters/firebase.d.ts"
+      "import": "./dist/adapters/firebase/index.js",
+      "types": "./dist/adapters/firebase/index.d.ts"
     }
   },
   "files": [
@@ -58,16 +58,17 @@
     "error-tracking",
     "monitoring"
   ],
-  "author": "Jordan (tech-converter)",
+  "author": "Jordan (Trenderz)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Jordane9999/logger-multi-db"
+    "url": "https://github.com/trenderz/universal-logger"
   },
   "bugs": {
-    "url": "https://github.com/Jordane9999/logger-multi-db/issues"
+    "url": "https://github.com/trenderz/universal-logger/issues"
   },
-  "homepage": "https://github.com/Jordane9999/logger-multi-db#readme",
+  "homepage": "https://github.com/trenderz/universal-logger#readme",
+  "peerDependencies": {},
   "peerDependenciesMeta": {
     "mongodb": {
       "optional": true
@@ -84,17 +85,9 @@
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "@types/pg": "^8.15.6",
     "typescript": "^5.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "dependencies": {
-    "firebase-admin": "^13.6.0",
-    "mongodb": "^7.0.0",
-    "mysql2": "^3.15.3",
-    "mysql2-promise": "^0.1.4",
-    "pg": "^8.16.3"
   }
 }

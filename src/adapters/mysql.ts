@@ -2,6 +2,7 @@
  * MySQL Adapter for Universal Logger
  */
 
+// @ts-expect-error - mysql2 is a peer dependency, may not be installed
 import mysql from 'mysql2/promise';
 import { LogAdapter, LogEntry, LogFilter, LogLevel } from '../types/index.js';
 

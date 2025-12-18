@@ -1,4 +1,4 @@
-# 🚀 Quick Start - logger-multi-db (ESM)
+# 🚀 Quick Start - @trenderz/universal-logger (ESM)
 
 Guide rapide pour démarrer avec le logger universel en **5 minutes** avec **ES Modules**.
 
@@ -9,17 +9,18 @@ Guide rapide pour démarrer avec le logger universel en **5 minutes** avec **ES 
 ### 1. Installer le package
 
 ```bash
-npm install logger-multi-db
+npm install @trenderz/universal-logger
 ```
 
 ### 2. Installer un adaptateur de base de données
 
 ```bash
 # Choisis UNE base de données
-npm install mongodb        # MongoDB
-npm install pg             # PostgreSQL
-npm install mysql2         # MySQL
-npm install firebase-admin # Firebase
+npm install mongodb            # MongoDB
+npm install pg                 # PostgreSQL
+npm i --save-dev @types/pg     # PostgreSQL
+npm install mysql2             # MySQL
+npm install firebase-admin     # Firebase
 ```
 
 ---
@@ -29,7 +30,7 @@ npm install firebase-admin # Firebase
 ### MongoDB
 
 ```javascript
-import { createLogger, createMongoDBAdapter } from "logger-multi-db";
+import { createLogger, createMongoDBAdapter } from "@trenderz/universal-logger";
 
 const logger = createLogger({
   adapter: createMongoDBAdapter({
@@ -47,7 +48,10 @@ logger.info("Hello World!", { userId: "123" });
 ### PostgreSQL
 
 ```javascript
-import { createLogger, createPostgreSQLAdapter } from "logger-multi-db";
+import {
+  createLogger,
+  createPostgreSQLAdapter,
+} from "@trenderz/universal-logger";
 
 const logger = createLogger({
   adapter: createPostgreSQLAdapter({
@@ -67,7 +71,7 @@ logger.info("Hello World!", { userId: "123" });
 ### MySQL
 
 ```javascript
-import { createLogger, createMySQLAdapter } from "logger-multi-db";
+import { createLogger, createMySQLAdapter } from "@trenderz/universal-logger";
 
 const logger = createLogger({
   adapter: createMySQLAdapter({
@@ -87,7 +91,10 @@ logger.info("Hello World!", { userId: "123" });
 ### Firebase
 
 ```javascript
-import { createLogger, createFirebaseAdapter } from "logger-multi-db";
+import {
+  createLogger,
+  createFirebaseAdapter,
+} from "@trenderz/universal-logger";
 
 const logger = createLogger({
   adapter: createFirebaseAdapter({
@@ -179,7 +186,7 @@ logger.error("Erreur !", {}, error);
 
 ---
 
-## ✅ C'est Tout !
+## ✅ C'est Tout
 
 Tu es prêt ! Lis le [README.md](./README.md) pour plus de détails.
 

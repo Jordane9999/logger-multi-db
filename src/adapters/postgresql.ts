@@ -2,9 +2,10 @@
  * PostgreSQL Adapter for Universal Logger
  */
 
-import pg from "../../node_modules/@types/pg/index.js";
-import { LogAdapter, LogEntry, LogFilter, LogLevel } from "../types/index.js";
+// @ts-expect-error - pg is a peer dependency, may not be installed
+import pg from 'pg';
 const { Pool } = pg;
+import { LogAdapter, LogEntry, LogFilter, LogLevel } from '../types/index.js';
 
 export interface PostgreSQLAdapterConfig {
   host: string;
@@ -18,16 +19,13 @@ export interface PostgreSQLAdapterConfig {
 
 export class PostgreSQLAdapter implements LogAdapter {
   private pool: any = null;
-  private config: Required<
-    Pick<PostgreSQLAdapterConfig, "tableName" | "autoCreateTable">
-  > &
-    PostgreSQLAdapterConfig;
+  private config: Required<Pick<PostgreSQLAdapterConfig, 'tableName' | 'autoCreateTable'>> & PostgreSQLAdapterConfig;
 
   constructor(config: PostgreSQLAdapterConfig) {
     this.config = {
       ...config,
-      tableName: config.tableName || "logs",
-      autoCreateTable: config.autoCreateTable ?? true,
+      tableName: config.tableName || 'logs',
+      autoCreateTable: config.autoCreateTable ?? true
     };
   }
 
@@ -39,9 +37,7 @@ export class PostgreSQLAdapter implements LogAdapter {
         await this.createTable();
       }
     } catch (error) {
-      throw new Error(
-        `PostgreSQL connection failed: ${(error as Error).message}`
-      );
+      throw new Error(`PostgreSQL connection failed: ${(error as Error).message}`);
     }
   }
 
@@ -79,7 +75,7 @@ export class PostgreSQLAdapter implements LogAdapter {
 
   async write(entry: LogEntry): Promise<void> {
     if (!this.pool) {
-      throw new Error("PostgreSQL not connected");
+      throw new Error('PostgreSQL not connected');
     }
 
     const query = `
@@ -95,7 +91,7 @@ export class PostgreSQLAdapter implements LogAdapter {
       entry.timestamp,
       entry.environment,
       entry.service,
-      entry.error ? JSON.stringify(entry.error) : null,
+      entry.error ? JSON.stringify(entry.error) : null
     ];
 
     await this.pool.query(query, values);
@@ -103,7 +99,7 @@ export class PostgreSQLAdapter implements LogAdapter {
 
   async query(filter: LogFilter): Promise<LogEntry[]> {
     if (!this.pool) {
-      throw new Error("PostgreSQL not connected");
+      throw new Error('PostgreSQL not connected');
     }
 
     let query = `SELECT * FROM ${this.config.tableName} WHERE 1=1`;
@@ -174,7 +170,7 @@ export class PostgreSQLAdapter implements LogAdapter {
       timestamp: new Date(row.timestamp),
       environment: row.environment,
       service: row.service,
-      error: row.error,
+      error: row.error
     }));
   }
 
@@ -190,8 +186,6 @@ export class PostgreSQLAdapter implements LogAdapter {
   }
 }
 
-export function createPostgreSQLAdapter(
-  config: PostgreSQLAdapterConfig
-): PostgreSQLAdapter {
+export function createPostgreSQLAdapter(config: PostgreSQLAdapterConfig): PostgreSQLAdapter {
   return new PostgreSQLAdapter(config);
 }

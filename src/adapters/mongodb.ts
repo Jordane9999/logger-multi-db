@@ -2,6 +2,7 @@
  * MongoDB Adapter for Universal Logger
  */
 
+// @ts-expect-error - mongodb is a peer dependency, may not be installed
 import { MongoClient, Db, Collection, Filter as MongoFilter } from 'mongodb';
 import { LogAdapter, LogEntry, LogFilter, LogLevel } from '../types/index.js';
 

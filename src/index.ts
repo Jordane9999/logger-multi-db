@@ -1,38 +1,35 @@
 /**
- * logger-multi-db
+ * @trenderz/universal-logger
  * Universal logging library for Node.js with ESM support
  */
 
 // Core
-export { UniversalLogger, createLogger } from "./core/logger.js";
+export { createLogger, UniversalLogger } from "./core/logger.js";
 
-// Types
+// Types (interfaces et types)
 export type {
   ErrorAnalysis,
   LogAdapter,
   LogContext,
   LogEntry,
   LogFilter,
-  LogLevel,
-  LogStats,
   LoggerConfig,
+  LogStats,
 } from "./types/index.js";
 
-// Adapters
-export { MongoDBAdapter, createMongoDBAdapter } from "./adapters/mongodb.js";
-export type { MongoDBAdapterConfig } from "./adapters/mongodb.js";
+// Enum (exporté comme valeur, pas comme type)
+export { LogLevel } from "./types/index.js";
 
-export {
-  PostgreSQLAdapter,
-  createPostgreSQLAdapter,
-} from "./adapters/postgresql.js";
-export type { PostgreSQLAdapterConfig } from "./adapters/postgresql.js";
-
-export { MySQLAdapter, createMySQLAdapter } from "./adapters/mysql.js";
-export type { MySQLAdapterConfig } from "./adapters/mysql.js";
-
-export { FirebaseAdapter, createFirebaseAdapter } from "./adapters/firebase.js";
-export type { FirebaseAdapterConfig } from "./adapters/firebase.js";
+// File Adapter (no peer dependencies - always available)
+export { createFileAdapter, FileAdapter } from "./adapters/file.js";
+export type { FileAdapterConfig } from "./adapters/file.js";
 
 // Default export
 export { createLogger as default } from "./core/logger.js";
+
+// Note: Database adapters (MongoDB, PostgreSQL, MySQL, Firebase) are available
+// via subpath imports to avoid loading peer dependencies:
+// - import { createMongoDBAdapter } from '@trenderz/universal-logger/adapters/mongodb'
+// - import { createPostgreSQLAdapter } from '@trenderz/universal-logger/adapters/postgresql'
+// - import { createMySQLAdapter } from '@trenderz/universal-logger/adapters/mysql'
+// - import { createFirebaseAdapter } from '@trenderz/universal-logger/adapters/firebase'
