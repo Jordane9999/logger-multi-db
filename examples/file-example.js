@@ -3,7 +3,7 @@
  * Writes logs to local files with automatic rotation
  */
 
-import { createLogger, createFileAdapter, LogLevel } from '@trenderz/universal-logger';
+import { createLogger, createFileAdapter, LogLevel } from 'logger-multi-db';
 
 async function main() {
   console.log('📁 Universal Logger - File Adapter Example (ESM)\n');

@@ -2,8 +2,8 @@
  * Example: MongoDB Adapter with ESM
  */
 
-import { createLogger, LogLevel } from '@trenderz/universal-logger';
-import { createMongoDBAdapter } from '@trenderz/universal-logger/adapters/mongodb';
+import { createLogger, LogLevel } from 'logger-multi-db';
+import { createMongoDBAdapter } from 'logger-multi-db/adapters/mongodb';
 
 async function main() {
   console.log('🍃 Universal Logger - MongoDB Example (ESM)\n');

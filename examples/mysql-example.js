@@ -2,8 +2,8 @@
  * Example: MySQL Adapter with ESM
  */
 
-import { createLogger } from '@trenderz/universal-logger';
-import { createMySQLAdapter } from '@trenderz/universal-logger/adapters/mysql';
+import { createLogger } from 'logger-multi-db';
+import { createMySQLAdapter } from 'logger-multi-db/adapters/mysql';
 
 async function main() {
   console.log('🐬 Universal Logger - MySQL Example (ESM)\n');

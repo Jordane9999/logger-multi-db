@@ -2,8 +2,8 @@
  * Example: Firebase/Firestore Adapter with ESM
  */
 
-import { createLogger, LogLevel } from '@trenderz/universal-logger';
-import { createFirebaseAdapter } from '@trenderz/universal-logger/adapters/firebase';
+import { createLogger, LogLevel } from 'logger-multi-db';
+import { createFirebaseAdapter } from 'logger-multi-db/adapters/firebase';
 
 async function main() {
   console.log('🔥 Universal Logger - Firebase Example (ESM)\n');

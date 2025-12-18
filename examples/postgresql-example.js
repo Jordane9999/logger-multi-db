@@ -2,8 +2,8 @@
  * Example: PostgreSQL Adapter with ESM
  */
 
-import { createLogger, LogLevel } from '@trenderz/universal-logger';
-import { createPostgreSQLAdapter } from '@trenderz/universal-logger/adapters/postgresql';
+import { createLogger, LogLevel } from 'logger-multi-db';
+import { createPostgreSQLAdapter } from 'logger-multi-db/adapters/postgresql';
 
 async function main() {
   console.log('🐘 Universal Logger - PostgreSQL Example (ESM)\n');
