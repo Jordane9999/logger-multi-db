@@ -20,7 +20,7 @@
     },
     "./adapters/mysql": {
       "import": "./dist/adapters/mysql/index.js",
-      ,"types": "./dist/adapters/mysql/index.d.ts"
+     "types": "./dist/adapters/mysql/index.d.ts"
     },
     "./adapters/firebase": {
       "import": "./dist/adapters/firebase/index.js",
