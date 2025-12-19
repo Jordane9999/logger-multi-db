@@ -25,6 +25,7 @@ Follow these steps to protect the `main` branch:
 ### 3. Enable Protection Rules
 
 #### ✅ **Require a pull request before merging**
+
 - Enable: **Require a pull request before merging**
   - ✅ **Require approvals**: Minimum 1 approval
   - ✅ **Dismiss stale pull request approvals when new commits are pushed**
@@ -33,6 +34,7 @@ Follow these steps to protect the `main` branch:
   - ⬜ **Allow specified actors to bypass required pull requests** (not recommended)
 
 #### ✅ **Require status checks to pass before merging**
+
 - Enable: **Require status checks to pass before merging**
   - ✅ **Require branches to be up to date before merging**
   - Select status checks that must pass:
@@ -43,30 +45,37 @@ Follow these steps to protect the `main` branch:
     - `security` - Security audit
 
 #### ✅ **Require conversation resolution before merging**
+
 - Enable: **Require conversation resolution before merging**
   - All PR comments must be resolved before merge
 
 #### ✅ **Require signed commits** (Recommended)
+
 - Enable: **Require signed commits**
   - All commits must be GPG/SSH signed
 
 #### ✅ **Require linear history** (Optional but recommended)
+
 - Enable: **Require linear history**
   - Prevents merge commits, forces rebase or squash
 
 #### ✅ **Include administrators**
+
 - Enable: **Include administrators**
   - Admins must also follow these rules
 
 #### ✅ **Restrict who can push to matching branches** (Optional)
+
 - Enable: **Restrict who can push to matching branches**
   - Only allow specific people/teams to push
   - Useful for core maintainers only
 
 #### ✅ **Allow force pushes** (Not Recommended)
+
 - ⬜ **Do NOT enable** - Force pushes can overwrite history
 
 #### ✅ **Allow deletions** (Not Recommended)
+
 - ⬜ **Do NOT enable** - Prevents accidental branch deletion
 
 ### 4. Save Changes
@@ -82,14 +91,18 @@ Click **Create** or **Save changes** at the bottom of the page.
 1. **Fork** the repository
 2. **Clone** your fork
 3. Create a **new branch** from `main`
+
    ```bash
    git checkout -b feature/my-feature
    ```
+
 4. Make your changes and commit
 5. **Push** to your fork
+
    ```bash
    git push origin feature/my-feature
    ```
+
 6. Open a **Pull Request** to `main`
 7. Wait for:
    - CI checks to pass ✅
@@ -113,16 +126,16 @@ Create a `.github/CODEOWNERS` file to automatically request reviews from specifi
 
 ```
 # Default owners for everything
-* @trenderz
+* @tech_converter
 
 # Adapters
-/src/adapters/ @trenderz
+/src/adapters/ @tech_converter
 
 # Core logger
-/src/core/ @trenderz
+/src/core/ @tech_converter
 
 # Documentation
-*.md @trenderz
+*.md @tech_converter
 ```
 
 ---
@@ -130,6 +143,7 @@ Create a `.github/CODEOWNERS` file to automatically request reviews from specifi
 ## 🚫 What Branch Protection Prevents
 
 ✅ **Prevents:**
+
 - Direct pushes to `main`
 - Merging untested code
 - Merging unapproved code
@@ -139,6 +153,7 @@ Create a `.github/CODEOWNERS` file to automatically request reviews from specifi
 - Force pushes that rewrite history
 
 ✅ **Enforces:**
+
 - Code review process
 - CI/CD pipeline
 - Code quality standards
@@ -152,6 +167,7 @@ Create a `.github/CODEOWNERS` file to automatically request reviews from specifi
 After enabling branch protection, test it:
 
 ### Test 1: Try Direct Push (Should Fail)
+
 ```bash
 # On main branch
 git checkout main
@@ -162,11 +178,13 @@ git push origin main
 ```
 
 **Expected:** ❌ Push rejected with message:
+
 ```
 remote: error: GH006: Protected branch update failed
 ```
 
 ### Test 2: Via Pull Request (Should Work)
+
 ```bash
 # Create feature branch
 git checkout -b test/branch-protection
@@ -188,11 +206,13 @@ git push origin test/branch-protection
 ## 🎓 Best Practices
 
 1. **Always work in feature branches**
+
    - `feature/add-redis-adapter`
    - `fix/mongodb-connection`
    - `docs/update-readme`
 
 2. **Keep branches up to date**
+
    ```bash
    git checkout main
    git pull upstream main
@@ -201,10 +221,12 @@ git push origin test/branch-protection
    ```
 
 3. **Write descriptive PR titles**
+
    - ✅ `feat(mongodb): add connection pooling`
    - ❌ `update stuff`
 
 4. **Keep PRs focused and small**
+
    - One feature/fix per PR
    - Easier to review
    - Faster to merge
@@ -229,6 +251,7 @@ git push origin test/branch-protection
 ### Q: How do I get my PR approved faster?
 
 **A:**
+
 - Keep PRs small and focused
 - Write clear descriptions
 - Add tests

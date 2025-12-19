@@ -1,6 +1,6 @@
 {
   "name": "logger-multi-db",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Universal logging library for Node.js - Works with MongoDB, PostgreSQL, MySQL, Firebase, and more",
   "type": "module",
   "main": "./dist/index.js",
@@ -58,16 +58,16 @@
     "error-tracking",
     "monitoring"
   ],
-  "author": "Jordan (Trenderz)",
+  "author": "Jordan (Tech converter)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trenderz/universal-logger.git"
+    "url": "git+https://github.com/Jordane9999/logger-multi-db.git"
   },
   "bugs": {
-    "url": "https://github.com/trenderz/universal-logger/issues"
+    "url": "https://github.com/Jordane9999/logger-multi-db/issues"
   },
-  "homepage": "https://github.com/trenderz/universal-logger#readme",
+  "homepage": "https://github.com/Jordane9999/logger-multi-db#readme",
   "peerDependencies": {},
   "peerDependenciesMeta": {
     "mongodb": {

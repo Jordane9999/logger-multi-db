@@ -32,7 +32,7 @@ Log to **MongoDB**, **PostgreSQL**, **MySQL**, **Firebase**, or any database wit
 # npm
 npm install logger-multi-db
 
-# yarn  
+# yarn
 yarn add logger-multi-db
 
 # pnpm
@@ -64,114 +64,114 @@ npm install firebase-admin
 ### File (No Database Required!)
 
 ```javascript
-import { createLogger, createFileAdapter, LogLevel } from 'logger-multi-db';
+import { createLogger, createFileAdapter, LogLevel } from "logger-multi-db";
 
 const logger = createLogger({
   adapter: createFileAdapter({
-    logDir: './logs',
-    filename: 'app.log',
-    maxSize: 5 * 1024 * 1024,  // 5MB
+    logDir: "./logs",
+    filename: "app.log",
+    maxSize: 5 * 1024 * 1024, // 5MB
     maxFiles: 3,
-    format: 'json'  // or 'text'
+    format: "json", // or 'text'
   }),
-  service: 'my-app',
-  minLevel: LogLevel.INFO
+  service: "my-app",
+  minLevel: LogLevel.INFO,
 });
 
 await logger.init();
 
-logger.info('Application started', { version: '1.0.0' });
-logger.error('Something went wrong', { userId: '123' }, new Error('Oops!'));
+logger.info("Application started", { version: "1.0.0" });
+logger.error("Something went wrong", { userId: "123" }, new Error("Oops!"));
 
 // Query logs from files
 const recentErrors = await logger.query({
   level: LogLevel.ERROR,
-  limit: 10
+  limit: 10,
 });
 ```
 
 ### MongoDB
 
 ```javascript
-import { createLogger, LogLevel } from 'logger-multi-db';
-import { createMongoDBAdapter } from 'logger-multi-db/adapters/mongodb';
+import { createLogger, LogLevel } from "logger-multi-db";
+import { createMongoDBAdapter } from "logger-multi-db/adapters/mongodb";
 
 const logger = createLogger({
   adapter: createMongoDBAdapter({
-    uri: 'mongodb://localhost:27017',
-    dbName: 'myapp',
-    collectionName: 'logs',
-    ttlDays: 30
+    uri: "mongodb://localhost:27017",
+    dbName: "myapp",
+    collectionName: "logs",
+    ttlDays: 30,
   }),
-  service: 'api',
-  environment: 'production'
+  service: "api",
+  environment: "production",
 });
 
 await logger.init();
 
-logger.info('User logged in', { userId: '123', email: 'user@example.com' });
-logger.error('Payment failed', { amount: 50 }, new Error('Stripe timeout'));
+logger.info("User logged in", { userId: "123", email: "user@example.com" });
+logger.error("Payment failed", { amount: 50 }, new Error("Stripe timeout"));
 ```
 
 ### PostgreSQL
 
 ```javascript
-import { createLogger } from 'logger-multi-db';
-import { createPostgreSQLAdapter } from 'logger-multi-db/adapters/postgresql';
+import { createLogger } from "logger-multi-db";
+import { createPostgreSQLAdapter } from "logger-multi-db/adapters/postgresql";
 
 const logger = createLogger({
   adapter: createPostgreSQLAdapter({
-    host: 'localhost',
-    database: 'myapp',
-    user: 'postgres',
-    password: 'password'
+    host: "localhost",
+    database: "myapp",
+    user: "postgres",
+    password: "password",
   }),
-  service: 'web'
+  service: "web",
 });
 
 await logger.init();
 
-logger.info('Order created', { orderId: '456', amount: 99.99 });
+logger.info("Order created", { orderId: "456", amount: 99.99 });
 ```
 
 ### MySQL
 
 ```javascript
-import { createLogger } from 'logger-multi-db';
-import { createMySQLAdapter } from 'logger-multi-db/adapters/mysql';
+import { createLogger } from "logger-multi-db";
+import { createMySQLAdapter } from "logger-multi-db/adapters/mysql";
 
 const logger = createLogger({
   adapter: createMySQLAdapter({
-    host: 'localhost',
-    database: 'myapp',
-    user: 'root',
-    password: 'password'
+    host: "localhost",
+    database: "myapp",
+    user: "root",
+    password: "password",
   }),
-  service: 'backend'
+  service: "backend",
 });
 
 await logger.init();
 
-logger.warn('Low stock', { productId: '789', stock: 5 });
+logger.warn("Low stock", { productId: "789", stock: 5 });
 ```
 
 ### Firebase
 
 ```javascript
-import { createLogger } from 'logger-multi-db';
-import { createFirebaseAdapter } from 'logger-multi-db/adapters/firebase';
+import { createLogger } from "logger-multi-db";
+import { createFirebaseAdapter } from "logger-multi-db/adapters/firebase";
 
 const logger = createLogger({
   adapter: createFirebaseAdapter({
-    serviceAccount: './serviceAccountKey.json',
-    collectionName: 'logs'
+    serviceAccount: "./serviceAccountKey.json",
+    collectionName: "logs",
   }),
-  service: 'mobile-app'
+  service: "mobile-app",
 });
 
 await logger.init();
 
-logger.info('User signup', { userId: '123', provider: 'google' });
+logger.info("User signup", { userId: "123", provider: "google" });
 ```
 
 ---
@@ -181,15 +181,15 @@ logger.info('User signup', { userId: '123', provider: 'google' });
 ### createLogger(config)
 
 ```javascript
-import { createLogger, LogLevel } from 'logger-multi-db';
+import { createLogger, LogLevel } from "logger-multi-db";
 
 const logger = createLogger({
-  adapter,                    // Database adapter (required)
-  environment: 'prod',        // Environment
-  service: 'api',             // Service name
-  enableConsole: true,        // Console logging
-  minLevel: LogLevel.INFO,    // Minimum level (use LogLevel enum)
-  sanitize: true              // Auto-sanitize
+  adapter, // Database adapter (required)
+  environment: "prod", // Environment
+  service: "api", // Service name
+  enableConsole: true, // Console logging
+  minLevel: LogLevel.INFO, // Minimum level (use LogLevel enum)
+  sanitize: true, // Auto-sanitize
 });
 ```
 
@@ -225,15 +225,16 @@ await logger.close()
 Sensitive data is **automatically masked**:
 
 ```javascript
-logger.info('Login attempt', {
-  email: 'jordan@example.com',     // → jor***@example.com
-  password: 'supersecret123',       // → ***REDACTED***
-  apiKey: 'sk_live_12345',         // → ***REDACTED***
-  userId: 'user123'                 // ✅ Not masked
+logger.info("Login attempt", {
+  email: "jordan@example.com", // → jor***@example.com
+  password: "supersecret123", // → ***REDACTED***
+  apiKey: "sk_live_12345", // → ***REDACTED***
+  userId: "user123", // ✅ Not masked
 });
 ```
 
 **Default masked fields:**
+
 - password, token, apiKey, secret
 - creditCard, ssn, bankAccount
 - privateKey, accessToken, refreshToken
@@ -246,13 +247,13 @@ logger.info('Login attempt', {
 ### Request Tracing
 
 ```javascript
-import { randomUUID } from 'crypto';
+import { randomUUID } from "crypto";
 
 const requestId = randomUUID();
 
-logger.info('Request started', { requestId, url: '/api/users' });
+logger.info("Request started", { requestId, url: "/api/users" });
 // ... processing ...
-logger.info('Request completed', { requestId, duration: 150 });
+logger.info("Request completed", { requestId, duration: 150 });
 
 // Find all logs for this request
 const logs = await logger.query({ requestId });
@@ -262,16 +263,16 @@ const logs = await logger.query({ requestId });
 
 ```javascript
 // Track orders
-logger.info('Order created', {
+logger.info("Order created", {
   orderId: order.id,
   userId: user.id,
-  amount: order.total
+  amount: order.total,
 });
 
 // Track payments
-logger.info('Payment processed', {
+logger.info("Payment processed", {
   orderId: order.id,
-  transactionId: payment.id
+  transactionId: payment.id,
 });
 ```
 
@@ -281,10 +282,14 @@ logger.info('Payment processed', {
 try {
   await processPayment(data);
 } catch (error) {
-  logger.error('Payment error', {
-    userId: user.id,
-    amount: data.amount
-  }, error);
+  logger.error(
+    "Payment error",
+    {
+      userId: user.id,
+      amount: data.amount,
+    },
+    error
+  );
 }
 ```
 
@@ -296,13 +301,13 @@ try {
 
 ```javascript
 // Before: MongoDB
-const adapter = createMongoDBAdapter({ uri: '...' });
+const adapter = createMongoDBAdapter({ uri: "..." });
 
-// After: PostgreSQL  
-const adapter = createPostgreSQLAdapter({ host: '...' });
+// After: PostgreSQL
+const adapter = createPostgreSQLAdapter({ host: "..." });
 
 // Your logging code stays the same!
-logger.info('Works!', { userId: '123' });
+logger.info("Works!", { userId: "123" });
 ```
 
 ---
@@ -314,26 +319,26 @@ Full TypeScript support:
 ```typescript
 import {
   createLogger,
-  LogLevel,              // Enum (not a type)
-  type LogEntry,         // Type
-  type LogContext,       // Type
-  type LogFilter         // Type
-} from 'logger-multi-db';
+  LogLevel, // Enum (not a type)
+  type LogEntry, // Type
+  type LogContext, // Type
+  type LogFilter, // Type
+} from "logger-multi-db";
 
 import {
   createMongoDBAdapter,
-  type MongoDBAdapterConfig
-} from 'logger-multi-db/adapters/mongodb';
+  type MongoDBAdapterConfig,
+} from "logger-multi-db/adapters/mongodb";
 
 const config: MongoDBAdapterConfig = {
-  uri: 'mongodb://localhost:27017',
-  dbName: 'myapp'
+  uri: "mongodb://localhost:27017",
+  dbName: "myapp",
 };
 
 // Use LogLevel as a value
 const logger = createLogger({
   adapter: createMongoDBAdapter(config),
-  minLevel: LogLevel.INFO  // ✅ Correct
+  minLevel: LogLevel.INFO, // ✅ Correct
 });
 ```
 
@@ -353,7 +358,7 @@ Disable in production:
 ```javascript
 const logger = createLogger({
   adapter,
-  enableConsole: process.env.NODE_ENV !== 'production'
+  enableConsole: process.env.NODE_ENV !== "production",
 });
 ```
 
@@ -367,15 +372,15 @@ Contributions welcome! See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## 📄 License
 
-MIT © [Jordan (Trenderz)]
+MIT © [Jordan (Tech converter)]
 
 ---
 
 ## 🔗 Links
 
 - [npm package](https://www.npmjs.com/package/logger-multi-db)
-- [GitHub](https://github.com/trenderz/universal-logger)
-- [Documentation](https://github.com/trenderz/universal-logger/tree/main/docs)
+- [GitHub](https://github.com/Jordane9999/universal-logger)
+- [Documentation](https://github.com/Jordane9999/universal-logger/tree/main/docs)
 
 ---
 

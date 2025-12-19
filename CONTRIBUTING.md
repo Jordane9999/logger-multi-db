@@ -23,6 +23,7 @@ This project and everyone participating in it is governed by our [Code of Conduc
 Before creating bug reports, please check the existing issues to avoid duplicates.
 
 **When reporting a bug, include:**
+
 - Clear and descriptive title
 - Steps to reproduce the issue
 - Expected behavior vs actual behavior
@@ -34,6 +35,7 @@ Before creating bug reports, please check the existing issues to avoid duplicate
 Enhancement suggestions are tracked as GitHub issues.
 
 **When suggesting an enhancement, include:**
+
 - Clear and descriptive title
 - Detailed description of the proposed functionality
 - Use cases and examples
@@ -42,6 +44,7 @@ Enhancement suggestions are tracked as GitHub issues.
 ### Your First Code Contribution
 
 Unsure where to begin? Look for issues labeled:
+
 - `good first issue` - Simple issues perfect for beginners
 - `help wanted` - Issues where we need help
 - `documentation` - Improvements to documentation
@@ -63,7 +66,7 @@ git clone https://github.com/YOUR_USERNAME/universal-logger.git
 cd universal-logger
 
 # Add upstream remote
-git remote add upstream https://github.com/trenderz/universal-logger.git
+git remote add upstream https://github.com/Jordane9999/universal-logger.git
 
 # Install dependencies
 npm install
@@ -100,6 +103,7 @@ npm test           # Run tests (when implemented)
 ### Before Submitting
 
 1. **Create a new branch** from `main`:
+
    ```bash
    git checkout main
    git pull upstream main
@@ -109,6 +113,7 @@ npm test           # Run tests (when implemented)
 2. **Make your changes** following our [coding standards](#coding-standards)
 
 3. **Test your changes**:
+
    ```bash
    npm run build    # Ensure it compiles
    npm test         # Run tests (when available)
@@ -121,6 +126,7 @@ npm test           # Run tests (when implemented)
 ### Submitting the PR
 
 1. **Push to your fork**:
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -183,7 +189,7 @@ export class MongoDBAdapter {
 
 ### Code Organization
 
-```typescript
+````typescript
 /**
  * Brief description of the function/class
  *
@@ -197,19 +203,19 @@ export class MongoDBAdapter {
 export function createLogger(config: LoggerConfig): UniversalLogger {
   return new UniversalLogger(config);
 }
-```
+````
 
 ### Import Order
 
 ```typescript
 // 1. Node.js built-in modules
-import { randomUUID } from 'crypto';
+import { randomUUID } from "crypto";
 
 // 2. External dependencies
-import { MongoClient } from 'mongodb';
+import { MongoClient } from "mongodb";
 
 // 3. Internal modules
-import { LogAdapter, LogEntry } from '../types/index.js';
+import { LogAdapter, LogEntry } from "../types/index.js";
 ```
 
 ## 💬 Commit Messages
@@ -274,11 +280,11 @@ Closes #123
 
 ```typescript
 // tests/logger.test.ts
-import { describe, it, expect } from 'vitest';
-import { createLogger } from '../src/index.js';
+import { describe, it, expect } from "vitest";
+import { createLogger } from "../src/index.js";
 
-describe('UniversalLogger', () => {
-  it('should sanitize passwords', () => {
+describe("UniversalLogger", () => {
+  it("should sanitize passwords", () => {
     // Test implementation
   });
 });
@@ -305,16 +311,18 @@ If you want to add support for a new database:
 1. **Create adapter file**: `src/adapters/your-db.ts`
 
 2. **Implement LogAdapter interface**:
+
    ```typescript
    export class YourDBAdapter implements LogAdapter {
-     async connect(): Promise<void> { }
-     async write(entry: LogEntry): Promise<void> { }
-     async query(filter: LogFilter): Promise<LogEntry[]> { }
-     async close(): Promise<void> { }
+     async connect(): Promise<void> {}
+     async write(entry: LogEntry): Promise<void> {}
+     async query(filter: LogFilter): Promise<LogEntry[]> {}
+     async close(): Promise<void> {}
    }
    ```
 
 3. **Export from `src/index.ts`**:
+
    ```typescript
    export { createYourDBAdapter, YourDBAdapter } from "./adapters/your-db.js";
    export type { YourDBAdapterConfig } from "./adapters/your-db.js";
@@ -337,13 +345,14 @@ If you want to add support for a new database:
 
 ## ❓ Questions?
 
-- 💬 [Open a Discussion](https://github.com/trenderz/universal-logger/discussions)
-- 🐛 [Report an Issue](https://github.com/trenderz/universal-logger/issues)
+- 💬 [Open a Discussion](https://github.com/Jordane9999/universal-logger/discussions)
+- 🐛 [Report an Issue](https://github.com/Jordane9999/universal-logger/issues)
 - 📧 Contact: [Your contact method]
 
 ## 🎉 Recognition
 
 Contributors will be recognized in:
+
 - README.md Contributors section
 - GitHub Contributors page
 - Release notes (for significant contributions)
