@@ -379,8 +379,8 @@ MIT © [Jordan (Tech converter)]
 ## 🔗 Links
 
 - [npm package](https://www.npmjs.com/package/logger-multi-db)
-- [GitHub](https://github.com/Jordane9999/universal-logger)
-- [Documentation](https://github.com/Jordane9999/universal-logger/tree/main/docs)
+- [GitHub](https://github.com/Jordane9999/logger-multi-db)
+- [Documentation](https://github.com/Jordane9999/logger-multi-db/tree/main/docs)
 
 ---
 
