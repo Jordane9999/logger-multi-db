@@ -2,8 +2,6 @@
  * MySQL Adapter for Universal Logger
  */
 
-// @ts-expect-error - mysql2 is a peer dependency, may not be installed
-import mysql from 'mysql2/promise';
 import { LogAdapter, LogEntry, LogFilter, LogLevel } from '../types/index.js';
 
 export interface MySQLAdapterConfig {
@@ -18,6 +16,7 @@ export interface MySQLAdapterConfig {
 
 export class MySQLAdapter implements LogAdapter {
   private pool: any = null;
+  private mysql: any = null;
   private config: Required<Pick<MySQLAdapterConfig, 'tableName' | 'autoCreateTable'>> & MySQLAdapterConfig;
 
   constructor(config: MySQLAdapterConfig) {
@@ -30,7 +29,19 @@ export class MySQLAdapter implements LogAdapter {
 
   async connect(): Promise<void> {
     try {
-      this.pool = mysql.createPool(this.config);
+      // Dynamically import mysql2 only when connecting (server-side only)
+      if (!this.mysql) {
+        try {
+          // @ts-ignore - mysql2 is a peer dependency, may not be installed
+          this.mysql = await import('mysql2/promise');
+        } catch (error) {
+          throw new Error(
+            'MySQL peer dependency is not installed. Please install it with: npm install mysql2'
+          );
+        }
+      }
+
+      this.pool = this.mysql.createPool(this.config);
 
       if (this.config.autoCreateTable) {
         await this.createTable();

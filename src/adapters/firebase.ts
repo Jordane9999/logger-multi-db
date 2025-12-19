@@ -2,9 +2,11 @@
  * Firebase/Firestore Adapter for Universal Logger
  */
 
-// @ts-expect-error - firebase-admin is a peer dependency, may not be installed
-import admin from 'firebase-admin';
 import { LogAdapter, LogEntry, LogFilter, LogLevel } from '../types/index.js';
+
+// Type imports only
+type FirebaseApp = any;
+type Firestore = any;
 
 export interface FirebaseAdapterConfig {
   serviceAccount?: any;
@@ -14,8 +16,9 @@ export interface FirebaseAdapterConfig {
 }
 
 export class FirebaseAdapter implements LogAdapter {
-  private app: admin.app.App | null = null;
-  private db: admin.firestore.Firestore | null = null;
+  private app: FirebaseApp | null = null;
+  private db: Firestore | null = null;
+  private admin: any = null;
   private config: Required<Pick<FirebaseAdapterConfig, 'collectionName' | 'ttlDays'>> & FirebaseAdapterConfig;
 
   constructor(config: FirebaseAdapterConfig) {
@@ -28,25 +31,38 @@ export class FirebaseAdapter implements LogAdapter {
 
   async connect(): Promise<void> {
     try {
+      // Dynamically import firebase-admin only when connecting (server-side only)
+      if (!this.admin) {
+        try {
+          // @ts-ignore - firebase-admin is a peer dependency, may not be installed
+          const adminModule = await import('firebase-admin');
+          this.admin = adminModule.default || adminModule;
+        } catch (error) {
+          throw new Error(
+            'Firebase peer dependency is not installed. Please install it with: npm install firebase-admin'
+          );
+        }
+      }
+
       const appConfig: any = {};
 
       if (this.config.serviceAccount) {
-        appConfig.credential = admin.credential.cert(this.config.serviceAccount);
+        appConfig.credential = this.admin.credential.cert(this.config.serviceAccount);
       }
 
       if (this.config.projectId) {
         appConfig.projectId = this.config.projectId;
       }
 
-      this.app = admin.initializeApp(appConfig);
-      this.db = admin.firestore(this.app);
+      this.app = this.admin.initializeApp(appConfig);
+      this.db = this.admin.firestore(this.app);
     } catch (error) {
       throw new Error(`Firebase connection failed: ${(error as Error).message}`);
     }
   }
 
   async write(entry: LogEntry): Promise<void> {
-    if (!this.db) {
+    if (!this.db || !this.admin) {
       throw new Error('Firebase not connected');
     }
 
@@ -54,18 +70,18 @@ export class FirebaseAdapter implements LogAdapter {
       level: entry.level,
       message: entry.message,
       context: entry.context || null,
-      timestamp: admin.firestore.Timestamp.fromDate(entry.timestamp),
+      timestamp: this.admin.firestore.Timestamp.fromDate(entry.timestamp),
       environment: entry.environment,
       service: entry.service,
       error: entry.error || null,
-      createdAt: admin.firestore.Timestamp.now()
+      createdAt: this.admin.firestore.Timestamp.now()
     };
 
     await this.db.collection(this.config.collectionName).add(docData);
   }
 
   async query(filter: LogFilter): Promise<LogEntry[]> {
-    if (!this.db) {
+    if (!this.db || !this.admin) {
       throw new Error('Firebase not connected');
     }
 
@@ -92,11 +108,11 @@ export class FirebaseAdapter implements LogAdapter {
     }
 
     if (filter.startDate) {
-      query = query.where('timestamp', '>=', admin.firestore.Timestamp.fromDate(filter.startDate));
+      query = query.where('timestamp', '>=', this.admin.firestore.Timestamp.fromDate(filter.startDate));
     }
 
     if (filter.endDate) {
-      query = query.where('timestamp', '<=', admin.firestore.Timestamp.fromDate(filter.endDate));
+      query = query.where('timestamp', '<=', this.admin.firestore.Timestamp.fromDate(filter.endDate));
     }
 
     query = query.orderBy('timestamp', 'desc');
@@ -149,12 +165,12 @@ export class FirebaseAdapter implements LogAdapter {
     }
   }
 
-  getFirestore(): admin.firestore.Firestore | null {
+  getFirestore(): Firestore | null {
     return this.db;
   }
 
   async cleanOldLogs(): Promise<number> {
-    if (!this.db) {
+    if (!this.db || !this.admin) {
       throw new Error('Firebase not connected');
     }
 
@@ -163,7 +179,7 @@ export class FirebaseAdapter implements LogAdapter {
 
     const snapshot = await this.db
       .collection(this.config.collectionName)
-      .where('timestamp', '<', admin.firestore.Timestamp.fromDate(cutoffDate))
+      .where('timestamp', '<', this.admin.firestore.Timestamp.fromDate(cutoffDate))
       .get();
 
     const batch = this.db.batch();

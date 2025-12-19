@@ -2,9 +2,6 @@
  * PostgreSQL Adapter for Universal Logger
  */
 
-// @ts-expect-error - pg is a peer dependency, may not be installed
-import pg from 'pg';
-const { Pool } = pg;
 import { LogAdapter, LogEntry, LogFilter, LogLevel } from '../types/index.js';
 
 export interface PostgreSQLAdapterConfig {
@@ -19,6 +16,7 @@ export interface PostgreSQLAdapterConfig {
 
 export class PostgreSQLAdapter implements LogAdapter {
   private pool: any = null;
+  private pg: any = null;
   private config: Required<Pick<PostgreSQLAdapterConfig, 'tableName' | 'autoCreateTable'>> & PostgreSQLAdapterConfig;
 
   constructor(config: PostgreSQLAdapterConfig) {
@@ -31,6 +29,19 @@ export class PostgreSQLAdapter implements LogAdapter {
 
   async connect(): Promise<void> {
     try {
+      // Dynamically import pg only when connecting (server-side only)
+      if (!this.pg) {
+        try {
+          // @ts-ignore - pg is a peer dependency, may not be installed
+          this.pg = await import('pg');
+        } catch (error) {
+          throw new Error(
+            'PostgreSQL peer dependency is not installed. Please install it with: npm install pg'
+          );
+        }
+      }
+
+      const { Pool } = this.pg.default;
       this.pool = new Pool(this.config);
 
       if (this.config.autoCreateTable) {

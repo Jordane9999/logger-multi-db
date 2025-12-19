@@ -2,9 +2,13 @@
  * MongoDB Adapter for Universal Logger
  */
 
-// @ts-expect-error - mongodb is a peer dependency, may not be installed
-import { MongoClient, Db, Collection, Filter as MongoFilter } from 'mongodb';
 import { LogAdapter, LogEntry, LogFilter, LogLevel } from '../types/index.js';
+
+// Type imports only (no runtime import)
+type MongoClient = any;
+type Db = any;
+type Collection<T> = any;
+type MongoFilter<T> = any;
 
 export interface MongoDBAdapterConfig {
   uri: string;
@@ -18,6 +22,7 @@ export class MongoDBAdapter implements LogAdapter {
   private db: Db | null = null;
   private collection: Collection<LogEntry> | null = null;
   private config: Required<MongoDBAdapterConfig>;
+  private mongodb: any = null;
 
   constructor(config: MongoDBAdapterConfig) {
     this.config = {
@@ -30,11 +35,23 @@ export class MongoDBAdapter implements LogAdapter {
 
   async connect(): Promise<void> {
     try {
-      this.client = new MongoClient(this.config.uri);
+      // Dynamically import mongodb only when connecting (server-side only)
+      if (!this.mongodb) {
+        try {
+          // @ts-ignore - mongodb is a peer dependency, may not be installed
+          this.mongodb = await import('mongodb');
+        } catch (error) {
+          throw new Error(
+            'MongoDB peer dependency is not installed. Please install it with: npm install mongodb'
+          );
+        }
+      }
+
+      this.client = new this.mongodb.MongoClient(this.config.uri);
       await this.client.connect();
-      
+
       this.db = this.client.db(this.config.dbName);
-      this.collection = this.db.collection<LogEntry>(this.config.collectionName);
+      this.collection = this.db.collection(this.config.collectionName);
 
       await this.createIndexes();
     } catch (error) {
