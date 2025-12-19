@@ -30,7 +30,7 @@ Describe your use case and how this feature would benefit you and others.
 **Example:**
 ```javascript
 // How you envision using this feature
-import { createLogger, createFileAdapter } from '@trenderz/universal-logger';
+import { createLogger, createFileAdapter } from 'logger-multi-db';
 
 const logger = createLogger({
   adapter: createFileAdapter({

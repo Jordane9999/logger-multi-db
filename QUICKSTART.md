@@ -1,4 +1,4 @@
-# 🚀 Quick Start - @trenderz/universal-logger (ESM)
+# 🚀 Quick Start - logger-multi-db (ESM)
 
 Guide rapide pour démarrer avec le logger universel en **5 minutes** avec **ES Modules**.
 
@@ -9,7 +9,7 @@ Guide rapide pour démarrer avec le logger universel en **5 minutes** avec **ES 
 ### 1. Installer le package
 
 ```bash
-npm install @trenderz/universal-logger
+npm install logger-multi-db
 ```
 
 ### 2. Installer un adaptateur de base de données
@@ -30,7 +30,8 @@ npm install firebase-admin     # Firebase
 ### MongoDB
 
 ```javascript
-import { createLogger, createMongoDBAdapter } from "@trenderz/universal-logger";
+import { createLogger } from "logger-multi-db";
+import { createMongoDBAdapter } from "logger-multi-db/adapters/mongodb";
 
 const logger = createLogger({
   adapter: createMongoDBAdapter({
@@ -48,10 +49,8 @@ logger.info("Hello World!", { userId: "123" });
 ### PostgreSQL
 
 ```javascript
-import {
-  createLogger,
-  createPostgreSQLAdapter,
-} from "@trenderz/universal-logger";
+import { createLogger } from "logger-multi-db";
+import { createPostgreSQLAdapter } from "logger-multi-db/adapters/postgresql";
 
 const logger = createLogger({
   adapter: createPostgreSQLAdapter({
@@ -71,7 +70,8 @@ logger.info("Hello World!", { userId: "123" });
 ### MySQL
 
 ```javascript
-import { createLogger, createMySQLAdapter } from "@trenderz/universal-logger";
+import { createLogger } from "logger-multi-db";
+import { createMySQLAdapter } from "logger-multi-db/adapters/mysql";
 
 const logger = createLogger({
   adapter: createMySQLAdapter({
@@ -91,10 +91,8 @@ logger.info("Hello World!", { userId: "123" });
 ### Firebase
 
 ```javascript
-import {
-  createLogger,
-  createFirebaseAdapter,
-} from "@trenderz/universal-logger";
+import { createLogger } from "logger-multi-db";
+import { createFirebaseAdapter } from "logger-multi-db/adapters/firebase";
 
 const logger = createLogger({
   adapter: createFirebaseAdapter({

@@ -1,6 +1,6 @@
 /**
  * MongoDB Adapter Export
- * Import: import { createMongoDBAdapter } from '@trenderz/universal-logger/adapters/mongodb'
+ * Import: import { createMongoDBAdapter } from 'logger-multi-db/adapters/mongodb'
  */
 
 export { createMongoDBAdapter, MongoDBAdapter } from '../mongodb.js';

@@ -1,5 +1,5 @@
 /**
- * @trenderz/universal-logger
+ * logger-multi-db
  * Universal logging library for Node.js with ESM support
  */
 
@@ -29,7 +29,7 @@ export { createLogger as default } from "./core/logger.js";
 
 // Note: Database adapters (MongoDB, PostgreSQL, MySQL, Firebase) are available
 // via subpath imports to avoid loading peer dependencies:
-// - import { createMongoDBAdapter } from '@trenderz/universal-logger/adapters/mongodb'
-// - import { createPostgreSQLAdapter } from '@trenderz/universal-logger/adapters/postgresql'
-// - import { createMySQLAdapter } from '@trenderz/universal-logger/adapters/mysql'
-// - import { createFirebaseAdapter } from '@trenderz/universal-logger/adapters/firebase'
+// - import { createMongoDBAdapter } from 'logger-multi-db/adapters/mongodb'
+// - import { createPostgreSQLAdapter } from 'logger-multi-db/adapters/postgresql'
+// - import { createMySQLAdapter } from 'logger-multi-db/adapters/mysql'
+// - import { createFirebaseAdapter } from 'logger-multi-db/adapters/firebase'

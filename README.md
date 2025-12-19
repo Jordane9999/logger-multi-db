@@ -1,6 +1,6 @@
-# @trenderz/universal-logger
+# logger-multi-db
 
-[![npm version](https://img.shields.io/npm/v/@trenderz/universal-logger.svg)](https://www.npmjs.com/package/@trenderz/universal-logger)
+[![npm version](https://img.shields.io/npm/v/logger-multi-db.svg)](https://www.npmjs.com/package/logger-multi-db)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > **Universal logging library for Node.js** - One API, multiple databases, pure ESM
@@ -12,11 +12,12 @@ Log to **MongoDB**, **PostgreSQL**, **MySQL**, **Firebase**, or any database wit
 ## ✨ Features
 
 - 🎯 **Universal API** - One interface for all databases
-- 📦 **Multiple Adapters** - MongoDB, PostgreSQL, MySQL, Firebase + more
+- 📦 **Multiple Adapters** - File, MongoDB, PostgreSQL, MySQL, Firebase
+- 📁 **File Adapter** - No database required! Log to local files with rotation
 - 🔒 **Auto Sanitization** - Masks passwords, tokens, emails automatically
 - 🎨 **Pure ESM** - Modern ES Modules (`import/export`)
 - 🎨 **TypeScript** - Full type safety
-- ⚡ **Lightweight** - Zero dependencies (adapters are peer deps)
+- ⚡ **Zero Dependencies** - File adapter has NO dependencies!
 - 📊 **5 Log Levels** - ERROR, WARN, INFO, DEBUG, TRACE
 - 🔍 **Powerful Queries** - Filter by user, date, level, text search
 - 🌍 **Environment Aware** - dev/staging/production
@@ -29,13 +30,13 @@ Log to **MongoDB**, **PostgreSQL**, **MySQL**, **Firebase**, or any database wit
 
 ```bash
 # npm
-npm install @trenderz/universal-logger
+npm install logger-multi-db
 
 # yarn  
-yarn add @trenderz/universal-logger
+yarn add logger-multi-db
 
 # pnpm
-pnpm add @trenderz/universal-logger
+pnpm add logger-multi-db
 ```
 
 **Then install your database adapter:**
@@ -60,10 +61,40 @@ npm install firebase-admin
 
 ## 🚀 Quick Start
 
+### File (No Database Required!)
+
+```javascript
+import { createLogger, createFileAdapter, LogLevel } from 'logger-multi-db';
+
+const logger = createLogger({
+  adapter: createFileAdapter({
+    logDir: './logs',
+    filename: 'app.log',
+    maxSize: 5 * 1024 * 1024,  // 5MB
+    maxFiles: 3,
+    format: 'json'  // or 'text'
+  }),
+  service: 'my-app',
+  minLevel: LogLevel.INFO
+});
+
+await logger.init();
+
+logger.info('Application started', { version: '1.0.0' });
+logger.error('Something went wrong', { userId: '123' }, new Error('Oops!'));
+
+// Query logs from files
+const recentErrors = await logger.query({
+  level: LogLevel.ERROR,
+  limit: 10
+});
+```
+
 ### MongoDB
 
 ```javascript
-import { createLogger, createMongoDBAdapter } from '@trenderz/universal-logger';
+import { createLogger, LogLevel } from 'logger-multi-db';
+import { createMongoDBAdapter } from 'logger-multi-db/adapters/mongodb';
 
 const logger = createLogger({
   adapter: createMongoDBAdapter({
@@ -85,7 +116,8 @@ logger.error('Payment failed', { amount: 50 }, new Error('Stripe timeout'));
 ### PostgreSQL
 
 ```javascript
-import { createLogger, createPostgreSQLAdapter } from '@trenderz/universal-logger';
+import { createLogger } from 'logger-multi-db';
+import { createPostgreSQLAdapter } from 'logger-multi-db/adapters/postgresql';
 
 const logger = createLogger({
   adapter: createPostgreSQLAdapter({
@@ -105,7 +137,8 @@ logger.info('Order created', { orderId: '456', amount: 99.99 });
 ### MySQL
 
 ```javascript
-import { createLogger, createMySQLAdapter } from '@trenderz/universal-logger';
+import { createLogger } from 'logger-multi-db';
+import { createMySQLAdapter } from 'logger-multi-db/adapters/mysql';
 
 const logger = createLogger({
   adapter: createMySQLAdapter({
@@ -125,7 +158,8 @@ logger.warn('Low stock', { productId: '789', stock: 5 });
 ### Firebase
 
 ```javascript
-import { createLogger, createFirebaseAdapter } from '@trenderz/universal-logger';
+import { createLogger } from 'logger-multi-db';
+import { createFirebaseAdapter } from 'logger-multi-db/adapters/firebase';
 
 const logger = createLogger({
   adapter: createFirebaseAdapter({
@@ -147,7 +181,7 @@ logger.info('User signup', { userId: '123', provider: 'google' });
 ### createLogger(config)
 
 ```javascript
-import { createLogger, LogLevel } from '@trenderz/universal-logger';
+import { createLogger, LogLevel } from 'logger-multi-db';
 
 const logger = createLogger({
   adapter,                    // Database adapter (required)
@@ -283,9 +317,13 @@ import {
   LogLevel,              // Enum (not a type)
   type LogEntry,         // Type
   type LogContext,       // Type
-  type LogFilter,        // Type
+  type LogFilter         // Type
+} from 'logger-multi-db';
+
+import {
+  createMongoDBAdapter,
   type MongoDBAdapterConfig
-} from '@trenderz/universal-logger';
+} from 'logger-multi-db/adapters/mongodb';
 
 const config: MongoDBAdapterConfig = {
   uri: 'mongodb://localhost:27017',
@@ -335,7 +373,7 @@ MIT © [Jordan (Trenderz)]
 
 ## 🔗 Links
 
-- [npm package](https://www.npmjs.com/package/@trenderz/universal-logger)
+- [npm package](https://www.npmjs.com/package/logger-multi-db)
 - [GitHub](https://github.com/trenderz/universal-logger)
 - [Documentation](https://github.com/trenderz/universal-logger/tree/main/docs)
 

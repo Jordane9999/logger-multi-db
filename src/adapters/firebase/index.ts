@@ -1,6 +1,6 @@
 /**
  * Firebase Adapter Export
- * Import: import { createFirebaseAdapter } from '@trenderz/universal-logger/adapters/firebase'
+ * Import: import { createFirebaseAdapter } from 'logger-multi-db/adapters/firebase'
  */
 
 export { createFirebaseAdapter, FirebaseAdapter } from '../firebase.js';

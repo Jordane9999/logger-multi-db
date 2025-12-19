@@ -29,7 +29,7 @@ A clear and concise description of what actually happened.
 
 ```javascript
 // Minimal code to reproduce the issue
-import { createLogger, createFileAdapter } from '@trenderz/universal-logger';
+import { createLogger, createFileAdapter } from 'logger-multi-db';
 
 const logger = createLogger({
   adapter: createFileAdapter()

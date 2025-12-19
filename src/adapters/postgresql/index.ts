@@ -1,6 +1,6 @@
 /**
  * PostgreSQL Adapter Export
- * Import: import { createPostgreSQLAdapter } from '@trenderz/universal-logger/adapters/postgresql'
+ * Import: import { createPostgreSQLAdapter } from 'logger-multi-db/adapters/postgresql'
  */
 
 export { createPostgreSQLAdapter, PostgreSQLAdapter } from '../postgresql.js';

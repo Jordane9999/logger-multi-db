@@ -29,3 +29,8 @@ coverage/
 
 # Misc
 *.log
+
+
+#npm
+.npmrc
+BRANCH_PROTECTION.md
