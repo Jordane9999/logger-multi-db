@@ -2,7 +2,7 @@
 
 This guide explains how to properly use `logger-multi-db` in Next.js applications.
 
-## 🚨 Important: Server-Side Only
+## 🚨 Important: Server-Side Only 
 
 **All database adapters (MongoDB, PostgreSQL, MySQL, Firebase, File) are server-side only.** They use Node.js APIs that are not available in the browser.
 
