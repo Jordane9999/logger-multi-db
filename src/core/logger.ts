@@ -35,9 +35,21 @@ export class UniversalLogger {
   };
 
   constructor(config: LoggerConfig) {
+    // Safe environment detection for Next.js and other environments
+    const getEnvironment = (): string => {
+      if (config.environment) return config.environment;
+
+      // Check if process.env is available (Node.js/Next.js server-side)
+      if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV) {
+        return process.env.NODE_ENV;
+      }
+
+      return 'development';
+    };
+
     this.config = {
       adapter: config.adapter,
-      environment: config.environment || process.env.NODE_ENV || 'development',
+      environment: getEnvironment(),
       service: config.service || 'app',
       enableConsole: config.enableConsole ?? true,
       minLevel: config.minLevel || LogLevel.INFO,
@@ -47,6 +59,17 @@ export class UniversalLogger {
   }
 
   async init(): Promise<void> {
+    // Warn if trying to use server-side adapters in browser environment
+    // Check if we're in a browser by looking for window on globalThis
+    if (typeof globalThis !== 'undefined' && 'window' in globalThis && (globalThis as any).window !== undefined) {
+      console.warn(
+        '⚠️  Logger: You are running in a browser environment. ' +
+        'Database adapters (MongoDB, PostgreSQL, MySQL, Firebase) require a server-side environment. ' +
+        'In Next.js, use this logger only in Server Components, API Routes, or Server Actions. ' +
+        'Consider using the File adapter or implement a client-safe adapter.'
+      );
+    }
+
     await this.config.adapter.connect();
   }
 
@@ -138,9 +161,12 @@ export class UniversalLogger {
 
     this.logToConsole(entry);
 
-    this.config.adapter.write(entry).catch(err => {
+    // Await the write to ensure logs are not lost (critical for Next.js)
+    try {
+      await this.config.adapter.write(entry);
+    } catch (err) {
       console.error('Logger: Failed to write to database', err);
-    });
+    }
   }
 
   error(message: string, context?: LogContext, error?: Error): Promise<void> {
