@@ -1,6 +1,6 @@
 {
   "name": "logger-multi-db",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Universal logging library for Node.js - Works with MongoDB, PostgreSQL, MySQL, Firebase, and more",
   "type": "module",
   "main": "./dist/index.js",
