@@ -68,8 +68,14 @@ jobs:
     - name: Bump version
       if: github.event_name == 'workflow_dispatch'
       run: |
-        npm version ${{ github.event.inputs.version }} -m "chore: release v%s [skip ci]"
-        git push --follow-tags origin main
+        CURRENT_VERSION=$(node -p "require('./package.json').version")
+        
+        if npm version ${{ github.event.inputs.version }} -m "chore: release v%s [skip ci]" 2>/dev/null; then
+          git push --follow-tags origin main
+        else
+          echo "Tag exists, using current version"
+        fi
+
 
     - name: Get package version
       id: version
