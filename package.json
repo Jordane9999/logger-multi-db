@@ -36,7 +36,16 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "node --test",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "prepack": "npm run build",
+    "release:patch": "npm version patch && git push --follow-tags",
+    "release:minor": "npm version minor && git push --follow-tags",
+    "release:major": "npm version major && git push --follow-tags",
+    "publish:dry": "npm publish --dry-run",
+    "publish:check": "npm pack --dry-run",
+    "clean": "rm -rf dist node_modules",
+    "typecheck": "tsc --noEmit",
+    "verify": "npm run typecheck && npm run build && npm run test"
   },
   "keywords": [
     "logger",

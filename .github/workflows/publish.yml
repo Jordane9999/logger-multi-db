@@ -1,8 +1,23 @@
 name: Publish to npm
 
 on:
+  # Trigger on GitHub Release
   release:
     types: [published]
+
+  # Manual trigger with version bump
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - prerelease
 
 jobs:
   publish:
@@ -10,26 +25,92 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
+      contents: write
       id-token: write
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20.x'
         registry-url: 'https://registry.npmjs.org'
+        cache: 'npm'
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
     - name: Install dependencies
       run: npm ci
 
+    - name: Run tests
+      run: npm test
+      continue-on-error: true
+
     - name: Build project
       run: npm run build
+
+    - name: Verify build output
+      run: |
+        ls -la dist/
+        test -f dist/index.js || (echo "❌ Build failed: index.js not found" && exit 1)
+        test -f dist/index.d.ts || (echo "❌ Build failed: index.d.ts not found" && exit 1)
+        echo "✅ Build verification passed"
+
+    # Version bump for manual workflow dispatch
+    - name: Bump version
+      if: github.event_name == 'workflow_dispatch'
+      run: |
+        npm version ${{ github.event.inputs.version }} -m "chore: release v%s [skip ci]"
+        git push --follow-tags origin main
+
+    - name: Get package version
+      id: version
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "📦 Publishing version: $VERSION"
+
+    # Create GitHub Release for manual trigger
+    - name: Create GitHub Release
+      if: github.event_name == 'workflow_dispatch'
+      uses: ncipollo/release-action@v1
+      with:
+        tag: v${{ steps.version.outputs.version }}
+        name: Release v${{ steps.version.outputs.version }}
+        body: |
+          ## 🚀 Release v${{ steps.version.outputs.version }}
+
+          This release was automatically created by the CI/CD pipeline.
+
+          ### 📦 Installation
+          ```bash
+          npm install logger-multi-db@${{ steps.version.outputs.version }}
+          ```
+
+          ### 📚 Documentation
+          - [README](https://github.com/${{ github.repository }}/blob/main/README.md)
+          - [Next.js Guide](https://github.com/${{ github.repository }}/blob/main/docs/NEXTJS.md)
+          - [Winston Comparison](https://github.com/${{ github.repository }}/blob/main/docs/COMPARISON-WINSTON.md)
+        generateReleaseNotes: true
+        draft: false
+        prerelease: ${{ contains(steps.version.outputs.version, '-') }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Publish to npm
       run: npm publish --provenance --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Success notification
+      run: |
+        echo "✅ Successfully published logger-multi-db@${{ steps.version.outputs.version }} to npm"
+        echo "📦 https://www.npmjs.com/package/logger-multi-db/v/${{ steps.version.outputs.version }}"
+        echo "🔗 https://github.com/${{ github.repository }}/releases/tag/v${{ steps.version.outputs.version }}"
