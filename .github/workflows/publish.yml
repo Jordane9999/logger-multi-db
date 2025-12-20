@@ -108,6 +108,8 @@ jobs:
         generateReleaseNotes: true
         draft: false
         prerelease: ${{ contains(steps.version.outputs.version, '-') }}
+        allowUpdates: true
+        skipIfReleaseExists: false
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Publish to npm
